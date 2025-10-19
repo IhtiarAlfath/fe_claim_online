@@ -60,7 +60,7 @@ class AuthenticationDatasourceRemoteImpl
             "accept": "*/*",
           },
           body: jsonEncode({
-            "username": dataRegister.email,
+            "username": dataRegister.username,
             "email": dataRegister.email,
             "password": dataRegister.password,
             "role_id": dataRegister.roleId,

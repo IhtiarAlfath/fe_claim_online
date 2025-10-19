@@ -53,7 +53,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
 class Sidebar extends StatelessWidget {
   const Sidebar({
     super.key,
@@ -64,6 +63,49 @@ class Sidebar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<SidebarXItem> sidebarItems = [
+      SidebarXItem(
+        icon: Icons.message_outlined,
+        label: 'Claim',
+        onTap: () {
+          if (userRole == 1 || userRole == 2) {
+            context.read<ClaimBloc>().add(const ClaimEventGetAllClaim());
+          } else {
+            context.read<ClaimBloc>().add(const ClaimEventGetClaimByUserId());
+          }
+          context
+              .read<ClaimGeneralBloc>()
+              .add(const ClaimGeneralEventClaimSummary());
+        },
+      ),
+    ];
+
+    if (userRole == 1) {
+      sidebarItems.add(
+        SidebarXItem(
+          icon: Icons.person,
+          label: 'User Management',
+          onTap: () {
+            context.read<UserBloc>().add(const UserEventGetAllUserRole());
+          },
+        ),
+      );
+    }
+
+    // 🔹 Item Logout selalu muncul
+    sidebarItems.add(
+      SidebarXItem(
+        icon: Icons.logout,
+        label: 'Logout',
+        onTap: () {
+          context
+              .read<AuthenticationBloc>()
+              .add(const AuthenticationEventLogout());
+          context.goNamed('loginpage');
+        },
+      ),
+    );
+
     return SidebarX(
       controller: _controller,
       theme: SidebarXTheme(
@@ -125,38 +167,7 @@ class Sidebar extends StatelessWidget {
           ),
         );
       },
-      items: [
-        SidebarXItem(
-            icon: Icons.message_outlined,
-            label: 'Claim',
-            onTap: () {
-              if (userRole == 1 || userRole == 2) {
-                context.read<ClaimBloc>().add(const ClaimEventGetAllClaim());
-              } else {
-                context
-                    .read<ClaimBloc>()
-                    .add(const ClaimEventGetClaimByUserId());
-              }
-              context
-                  .read<ClaimGeneralBloc>()
-                  .add(const ClaimGeneralEventClaimSummary());
-            }),
-        SidebarXItem(
-            icon: Icons.person,
-            label: 'User Management',
-            onTap: () {
-              context.read<UserBloc>().add(const UserEventGetAllUserRole());
-            }),
-        SidebarXItem(
-            icon: Icons.logout,
-            label: 'Logout',
-            onTap: () {
-              context
-                  .read<AuthenticationBloc>()
-                  .add(const AuthenticationEventLogout());
-              context.goNamed('loginpage');
-            }),
-      ],
+      items: sidebarItems,
     );
   }
 }

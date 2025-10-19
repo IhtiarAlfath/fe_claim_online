@@ -107,15 +107,6 @@ class UserDatasourceRemoteImpl extends UserDatasourceRemote {
                 "user_id": request.userId,
               },
             ));
-        print(jsonEncode(
-          {
-            "username": request.username,
-            "email": request.email,
-            "role_id": request.roleId,
-            "user_id": request.userId,
-          },
-        ));
-        print(response.body);
 
         if (response.statusCode != 200) {
           return Future.error(

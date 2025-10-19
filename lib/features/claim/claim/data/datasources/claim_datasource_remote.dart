@@ -156,8 +156,7 @@ class ClaimDatasourceRemoteImpl extends ClaimDatasourceRemote {
         if (response.statusCode != 200) {
           return Future.error(
               ServerException(message: jsonDecode(response.body)['message']));
-        } 
-        
+        }
 
         return GeneralSuccess(message: jsonDecode(response.body)['message']);
       } else {
@@ -289,7 +288,7 @@ class ClaimDatasourceRemoteImpl extends ClaimDatasourceRemote {
     try {
       DataUserToken? userToken = await AuthService.getUser();
       if (userToken != null) {
-        var response = await client.post(
+        var response = await client.delete(
           Uri.parse('$url$deleteClaimDocumentPath/$fileId'),
           headers: {
             "Content-Type": "application/json",
